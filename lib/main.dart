@@ -1,7 +1,10 @@
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tiktaktoe/screen/homepage.dart';
+import 'package:tiktaktoe/screen/splash.dart';
 
-import 'homepage.dart';
+// import 'homepage.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return  MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: firstpage(),
+      home: splash_screen(),
     );
   }
 }
@@ -26,10 +29,10 @@ class firstpage extends StatefulWidget {
 
 class _firstpageState extends State<firstpage> {
 
-  var fontblack = GoogleFonts.pressStart2p(
-      textStyle: TextStyle(color: Colors.black,letterSpacing: 3));
-  var fontwhite = GoogleFonts.pressStart2p(
-      textStyle: TextStyle(color: Colors.white,letterSpacing: 3,fontSize: 15));
+  // var fontblack = GoogleFonts.pressStart2p(
+  //     textStyle: TextStyle(color: Colors.black,letterSpacing: 3));
+  // var fontwhite = GoogleFonts.pressStart2p(
+  //     textStyle: TextStyle(color: Colors.white,letterSpacing: 3,fontSize: 15));
 
 
   @override
@@ -44,13 +47,57 @@ class _firstpageState extends State<firstpage> {
             children: [
               Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 120.0),
+                    padding: const EdgeInsets.only(top: 80.0),
                   child: Container(
-                    child: Text("TIC TAK TOE",
+                    child: Text("TIC TAC TOE",
                         style: GoogleFonts.pressStart2p(color: Colors.white,fontSize: 30),),
                   ),)),
               
-              // Expanded(child: child)
+              Expanded(flex: 2,
+                  child: Container(
+                    child: AvatarGlow(
+                      endRadius: 140,
+                      duration: Duration(seconds: 2),
+                      glowColor: Colors.white,
+                      repeat: true,
+                      repeatPauseDuration: Duration(seconds: 1),
+                      startDelay: Duration(seconds: 1),
+                      child: Container(
+                        decoration: BoxDecoration(border: Border.all(
+                          style: BorderStyle.none,
+                        ),
+                        shape: BoxShape.circle),
+                      child: CircleAvatar(
+                        backgroundColor: Colors.grey[800],
+                        child: Container(
+                          child: Image.asset('images/tik.png',color: Colors.white,fit: BoxFit.scaleDown,),
+                        ),
+                        radius: 80.0,
+                      ),),
+                    ),
+                  )),
+
+              Expanded(child: Padding(
+                padding: const EdgeInsets.only(top: 80),
+                child: Container(
+                  child: Text("@CREATEDBYSAPNA",style: GoogleFonts.pressStart2p(color: Colors.white,fontSize: 20),),
+                ),
+              )),
+
+              GestureDetector(onTap: (){
+                Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => MyHomePage()),
+                );
+              },
+              child: Padding(
+                padding: EdgeInsets.only(left: 40,right: 40,bottom: 60),
+              child: Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), color: Colors.yellow,),
+                padding: EdgeInsets.all(30),
+
+                child: Center(
+                    child: Text("PLAY GAME",style: GoogleFonts.pressStart2p(color: Colors.black,),)),
+              ),),
+              )
             ],
           ),
         ),

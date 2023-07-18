@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class MyHomePage extends StatefulWidget {
+import '../main.dart';
 
+class MyHomePage extends StatefulWidget {
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
@@ -10,40 +11,93 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int filledbox = 0;
   bool oturn = true;
+  int totalgame = 0;
   List<String> display = ['', '', '', '', '', '', '', '', ''];
-
-  var fontblack = GoogleFonts.pressStart2p(
-      textStyle: TextStyle(color: Colors.black,letterSpacing: 3));
-  var fontwhite = GoogleFonts.pressStart2p(
-      textStyle: TextStyle(color: Colors.white,letterSpacing: 3,fontSize: 15));
+  List<int> winningLine = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey[600],
-        body: Center(
-          child: GridView.builder(
+      backgroundColor: Colors.grey[600],
+      body: Column(
+        children: [
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 50),
+              child: Text(
+                "Total Game",
+                style: GoogleFonts.pressStart2p(color: Colors.white, fontSize: 20),
+              ),
+            ),
+          ),
+          SizedBox(height: 10),
+          Text(
+            totalgame.toString(),
+            style: GoogleFonts.pressStart2p(color: Colors.white, fontSize: 20),
+          ),
+          SizedBox(height: 50),
+          Container(
+            height: MediaQuery.of(context).size.height / 2,
+            width: MediaQuery.of(context).size.height / 2,
+            margin: const EdgeInsets.all(10),
+            child: GridView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
               itemCount: 9,
               gridDelegate:
               SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
               itemBuilder: (BuildContext context, int i) {
+                Color cellColor = Colors.grey.shade700;
+                if (winningLine.contains(i)) {
+                  cellColor = Colors.yellow;
+                } else if (display[i] == 'o') {
+                  cellColor = Colors.orange;
+                } else if (display[i] == 'x') {
+                  cellColor = Colors.blue;
+                }
+
                 return GestureDetector(
                   onTap: () {
                     _tapped(i);
                   },
                   child: Container(
-                    decoration:
-                    BoxDecoration(border: Border.all(color: Colors.green)),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white),
+                      color: cellColor,
+                    ),
                     child: Center(
                       child: Text(
                         display[i],
-                        style: TextStyle(color: Colors.white, fontSize: 40),
+                        style: TextStyle(
+                          color: display[i] == 'o' ? Colors.black : Colors.white,
+                          fontSize: 70,
+                        ),
                       ),
                     ),
                   ),
                 );
-              }),
-        ));
+              },
+            ),
+          ),
+
+          SizedBox(height: 50,),
+          GestureDetector(onTap: (){
+            Navigator.push(
+              context, MaterialPageRoute(builder: (context) => firstpage()),
+            );
+          },
+            child: Padding(
+              padding: EdgeInsets.only(left: 70,right: 70,bottom: 60),
+              child: Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), color: Colors.yellow,),
+                padding: EdgeInsets.all(20),
+
+                child: Center(
+                    child: Text("Home Screen",style: GoogleFonts.pressStart2p(color: Colors.black,),)),
+              ),),
+          )
+        ],
+      ),
+    );
   }
 
   void _tapped(int index) {
@@ -68,6 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
         display[0] == display[2] &&
         display[0] != '') {
       _showWinDialog(display[0]);
+
 
     }
 
@@ -140,6 +195,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Text('Play Again'))],
           );
         });
+    totalgame+=1;
+
   }
 
   void _showWinDialog(String winner){
@@ -149,14 +206,19 @@ class _MyHomePageState extends State<MyHomePage> {
         builder: (BuildContext context){
           return AlertDialog(
             title: Text("Winner! is: "+winner),
+
             actions: <Widget>[ElevatedButton(
-                onPressed: (){
-                  _clearboard();
-                  Navigator.of(context).pop();
-                },
-                child: Text('Play Again'))],
+              onPressed: (){
+                _clearboard();
+                Navigator.of(context).pop();
+              },
+              child: Text('Play Again'),
+            )],
+
           );
+
         });
+    totalgame+=1;
   }
 
   void _clearboard(){
