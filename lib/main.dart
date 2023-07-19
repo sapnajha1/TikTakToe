@@ -29,11 +29,6 @@ class firstpage extends StatefulWidget {
 
 class _firstpageState extends State<firstpage> {
 
-  // var fontblack = GoogleFonts.pressStart2p(
-  //     textStyle: TextStyle(color: Colors.black,letterSpacing: 3));
-  // var fontwhite = GoogleFonts.pressStart2p(
-  //     textStyle: TextStyle(color: Colors.white,letterSpacing: 3,fontSize: 15));
-
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +40,8 @@ class _firstpageState extends State<firstpage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+
+              // App logo in Text....................
               Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(top: 80.0),
@@ -52,7 +49,10 @@ class _firstpageState extends State<firstpage> {
                     child: Text("TIC TAC TOE",
                         style: GoogleFonts.pressStart2p(color: Colors.white,fontSize: 30),),
                   ),)),
-              
+              // ...........................................
+
+
+              // using AvatarGlow for visual effect.........................
               Expanded(flex: 2,
                   child: Container(
                     child: AvatarGlow(
@@ -76,14 +76,20 @@ class _firstpageState extends State<firstpage> {
                       ),),
                     ),
                   )),
+                  // .........................................................................
 
+
+              // Text.............................
               Expanded(child: Padding(
                 padding: const EdgeInsets.only(top: 80),
                 child: Container(
                   child: Text("@CREATEDBYSAPNA",style: GoogleFonts.pressStart2p(color: Colors.white,fontSize: 20),),
                 ),
               )),
+              //................................................
 
+
+              //GestureDetector to handle user taps on the grid view cells and update the game state accordingly..............
               GestureDetector(onTap: (){
                 Navigator.push(
                   context, MaterialPageRoute(builder: (context) => MyHomePage()),
@@ -98,6 +104,8 @@ class _firstpageState extends State<firstpage> {
                     child: Text("PLAY GAME",style: GoogleFonts.pressStart2p(color: Colors.black,),)),
               ),),
               )
+              //.................................................................................................
+
             ],
           ),
         ),

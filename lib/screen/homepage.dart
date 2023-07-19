@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:audioplayers/audioplayers.dart';
+import '../function/tapped.dart';
 import '../main.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -10,7 +11,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int filledbox = 0;
-  bool oturn = true;
+  bool oturn = true;    // true for o player and false for x player......
   int totalgame = 0;
   List<String> display = ['', '', '', '', '', '', '', '', ''];
   List<int> winningLine = [];
@@ -21,12 +22,14 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: Colors.grey[600],
       body: Column(
         children: [
+
+          // Text..and..Game count.....................................
           Center(
             child: Padding(
               padding: const EdgeInsets.only(top: 50),
               child: Text(
                 "Total Game",
-                style: GoogleFonts.pressStart2p(color: Colors.white, fontSize: 20),
+                style: GoogleFonts.pressStart2p(color: Colors.white, fontSize: 20),  //  font style to give a retro gaming look.
               ),
             ),
           ),
@@ -35,18 +38,24 @@ class _MyHomePageState extends State<MyHomePage> {
             totalgame.toString(),
             style: GoogleFonts.pressStart2p(color: Colors.white, fontSize: 20),
           ),
+          //............................................................................
+
+
+          //.......gridview for handle user input nd looks of game.............................................................
           SizedBox(height: 50),
           Container(
             height: MediaQuery.of(context).size.height / 2,
             width: MediaQuery.of(context).size.height / 2,
             margin: const EdgeInsets.all(10),
-            child: GridView.builder(
+            child: GridView.builder(                        //  allows to build grid items on-demand,
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               itemCount: 9,
               gridDelegate:
               SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
               itemBuilder: (BuildContext context, int i) {
+
+                // Giving color to gridview box ....................................
                 Color cellColor = Colors.grey.shade700;
                 if (winningLine.contains(i)) {
                   cellColor = Colors.yellow;
@@ -56,10 +65,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   cellColor = Colors.blue;
                 }
 
-                return GestureDetector(
+                return GestureDetector(   //  is used to detect taps on the cells.
                   onTap: () {
-                    _tapped(i);
+                    _tapped(i);           //  When a cell is tapped, the _tapped method is called with the index of the tapped cell.
                   },
+
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.white),
@@ -80,6 +90,10 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
 
+          //......................................................................
+
+
+          // GestureDetector to handle user taps on the grid view cells and update the game state accordingly..............
           SizedBox(height: 50,),
           GestureDetector(onTap: (){
             Navigator.push(
@@ -95,11 +109,15 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Text("Home Screen",style: GoogleFonts.pressStart2p(color: Colors.black,),)),
               ),),
           )
+          //...................................................................................................
+
+
         ],
       ),
     );
   }
 
+  // Function to handle user input via tapping ........................................................
   void _tapped(int index) {
     setState(() {
       // display[index] = '0';
@@ -114,7 +132,9 @@ class _MyHomePageState extends State<MyHomePage> {
       _checkWinner();
     });
   }
+//..............................................................................................
 
+  //...Function to check Winner of the Game................................................................
   void _checkWinner() {
 
     // checks 1st row
@@ -122,7 +142,6 @@ class _MyHomePageState extends State<MyHomePage> {
         display[0] == display[2] &&
         display[0] != '') {
       _showWinDialog(display[0]);
-
 
     }
 
@@ -169,17 +188,19 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     // checks 1st row
-    if (display[2] == display[4] &&
-        display[2] == display[6] &&
-        display[2] != '') {
-      _showWinDialog(display[2]);
+    if (display[6] == display[4] &&
+        display[6] == display[2] &&
+        display[6] != '') {
+      _showWinDialog(display[6]);
     }
 
+    // condition to check Draw
     else if (filledbox == 9){
       _showDrawDialog();
     }
   }
 
+  //...Draw Dialog box occur......................................................................
   void _showDrawDialog(){
     showDialog(
         barrierDismissible: false,
@@ -198,7 +219,10 @@ class _MyHomePageState extends State<MyHomePage> {
     totalgame+=1;
 
   }
+//.....................................................................................................
 
+
+  //..Winner dialog box occur......................................................................
   void _showWinDialog(String winner){
     showDialog(
         barrierDismissible: false,
@@ -220,7 +244,9 @@ class _MyHomePageState extends State<MyHomePage> {
         });
     totalgame+=1;
   }
+//...................................................................................................
 
+  //..board will clean after each game............................................................
   void _clearboard(){
     setState(() {
       for (int i=0; i<9; i++){
